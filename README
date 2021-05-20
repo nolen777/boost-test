@@ -1,0 +1,14 @@
+A dumb test program to test priority boosting behavior on MacOS.
+
+It should work to just `git clone` the repo, cd into the directory, and run
+xcodebuild build && ./build/Release/boost-test
+
+The program creates 100 blocks of work, each 1s, on each of two background QoS queues.
+After 10s, it dispatch_syncs another block of work, from a higher-priority queue, to
+one of the background threads. If I run this on my Intel Mac, and then run ps -eM <pid>,
+I see two threads of priority 4 (background) using 100% CPU each. After 10s, I have
+instead 1 thread of prio 4 and one of prio 37; the second has been boosted because
+of the dispatch_sync.
+
+On an M1 Mac, what I am guessing will happen is that it will use 100% of two
+efficiency cores for 10s and then 1 efficiency and 1 performance core after that.
