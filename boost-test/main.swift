@@ -46,6 +46,8 @@ let hipriQ = DispatchQueue(
     autoreleaseFrequency: DispatchQueue.AutoreleaseFrequency.inherit, 
     target: DispatchQueue.global())
 
+print("Running with pid \(getpid())")
+
 let unitDuration = 1.0
 
 // Dispatch 100 units of 1s of work to each of the background queues
